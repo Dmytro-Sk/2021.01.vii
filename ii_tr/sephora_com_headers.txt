@@ -1,0 +1,100 @@
+------------------ GET LOCATORS ------------------
+
+CATEGORY = ''
+OIL_FREE = ''
+PARABEN_FREE = ''
+SULFATE_FREE = ''
+GLUTEN_FREE = ''
+SILICONE_FREE = ''
+VEGAN = ''
+PRICE = ''
+SKIN_TYPE = ''
+SKINCARE_CONCERNS = ''
+WHAT_IT_IS = ''
+NUMBER_OF_STARS = ''
+REVIEW_TITLE = ''
+REVIEW_DESCRIPTION = ''
+REVIEWER_SKIN_TYPE = ''
+REVIEWER_SKIN_TONE = ''
+
+
+-------------- GET CUSTOM SETTINGS ---------------
+
+'category',
+'oil_free',
+'paraben_free',
+'sulfate_free',
+'gluten_free',
+'silicone_free',
+'vegan',
+'price',
+'skin_type',
+'skincare_concerns',
+'what_it_is',
+'number_of_stars',
+'review_title',
+'review_description',
+'reviewer_skin_type',
+'reviewer_skin_tone',
+
+
+--------------- GET PARSE ELEMENTS ---------------
+
+category = response.xpath(Locators.CATEGORY).get()
+oil_free = response.xpath(Locators.OIL_FREE).get()
+paraben_free = response.xpath(Locators.PARABEN_FREE).get()
+sulfate_free = response.xpath(Locators.SULFATE_FREE).get()
+gluten_free = response.xpath(Locators.GLUTEN_FREE).get()
+silicone_free = response.xpath(Locators.SILICONE_FREE).get()
+vegan = response.xpath(Locators.VEGAN).get()
+price = response.xpath(Locators.PRICE).get()
+skin_type = response.xpath(Locators.SKIN_TYPE).get()
+skincare_concerns = response.xpath(Locators.SKINCARE_CONCERNS).get()
+what_it_is = response.xpath(Locators.WHAT_IT_IS).get()
+number_of_stars = response.xpath(Locators.NUMBER_OF_STARS).get()
+review_title = response.xpath(Locators.REVIEW_TITLE).get()
+review_description = response.xpath(Locators.REVIEW_DESCRIPTION).get()
+reviewer_skin_type = response.xpath(Locators.REVIEWER_SKIN_TYPE).get()
+reviewer_skin_tone = response.xpath(Locators.REVIEWER_SKIN_TONE).get()
+
+
+------------ GET PARSE ITEMS ELEMENTS ------------
+
+items['category'] = category
+items['oil_free'] = oil_free
+items['paraben_free'] = paraben_free
+items['sulfate_free'] = sulfate_free
+items['gluten_free'] = gluten_free
+items['silicone_free'] = silicone_free
+items['vegan'] = vegan
+items['price'] = price
+items['skin_type'] = skin_type
+items['skincare_concerns'] = skincare_concerns
+items['what_it_is'] = what_it_is
+items['number_of_stars'] = number_of_stars
+items['review_title'] = review_title
+items['review_description'] = review_description
+items['reviewer_skin_type'] = reviewer_skin_type
+items['reviewer_skin_tone'] = reviewer_skin_tone
+
+
+------------------- GET ITEMS --------------------
+
+category = scrapy.Field()
+oil_free = scrapy.Field()
+paraben_free = scrapy.Field()
+sulfate_free = scrapy.Field()
+gluten_free = scrapy.Field()
+silicone_free = scrapy.Field()
+vegan = scrapy.Field()
+price = scrapy.Field()
+skin_type = scrapy.Field()
+skincare_concerns = scrapy.Field()
+what_it_is = scrapy.Field()
+number_of_stars = scrapy.Field()
+review_title = scrapy.Field()
+review_description = scrapy.Field()
+reviewer_skin_type = scrapy.Field()
+reviewer_skin_tone = scrapy.Field()
+
+
