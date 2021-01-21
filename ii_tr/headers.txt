@@ -1,0 +1,15 @@
+headers = {
+  "Accept": "*/*",
+  "Accept-Encoding": "gzip,deflate,br",
+  "Accept-Language": "en-US,en;q=0.9",
+  "Cache-Control": "no-cache",
+  "Connection": "keep-alive",
+  "Host": "api.bazaarvoice.com",
+  "Origin": "https",
+  "Pragma": "no-cache",
+  "Referer": "https",
+  "Sec-Fetch-Dest": "empty",
+  "Sec-Fetch-Mode": "cors",
+  "Sec-Fetch-Site": "cross-site",
+  "User-Agent": "Mozilla/5.0(WindowsNT10.0;Win64;x64)AppleWebKit/537.36(KHTML,likeGecko)Chrome/87.0.4280.141Safari/537.36"
+}

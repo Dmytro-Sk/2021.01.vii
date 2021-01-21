@@ -1,5 +1,7 @@
 ------------------ GET LOCATORS ------------------
 
+PRODUCT_NAME = ''
+PRODUCT_ID = ''
 CATEGORY = ''
 OIL_FREE = ''
 PARABEN_FREE = ''
@@ -20,6 +22,8 @@ REVIEWER_SKIN_TONE = ''
 
 -------------- GET CUSTOM SETTINGS ---------------
 
+'product_name',
+'product_id',
 'category',
 'oil_free',
 'paraben_free',
@@ -40,6 +44,8 @@ REVIEWER_SKIN_TONE = ''
 
 --------------- GET PARSE ELEMENTS ---------------
 
+product_name = response.xpath(Locators.PRODUCT_NAME).get()
+product_id = response.xpath(Locators.PRODUCT_ID).get()
 category = response.xpath(Locators.CATEGORY).get()
 oil_free = response.xpath(Locators.OIL_FREE).get()
 paraben_free = response.xpath(Locators.PARABEN_FREE).get()
@@ -60,6 +66,8 @@ reviewer_skin_tone = response.xpath(Locators.REVIEWER_SKIN_TONE).get()
 
 ------------ GET PARSE ITEMS ELEMENTS ------------
 
+items['product_name'] = product_name
+items['product_id'] = product_id
 items['category'] = category
 items['oil_free'] = oil_free
 items['paraben_free'] = paraben_free
@@ -80,6 +88,8 @@ items['reviewer_skin_tone'] = reviewer_skin_tone
 
 ------------------- GET ITEMS --------------------
 
+product_name = scrapy.Field()
+product_id = scrapy.Field()
 category = scrapy.Field()
 oil_free = scrapy.Field()
 paraben_free = scrapy.Field()

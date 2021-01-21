@@ -7,6 +7,9 @@ import scrapy
 
 
 class SephoraComItem(scrapy.Item):
+    product_name = scrapy.Field()
+    product_url = scrapy.Field()
+    product_id = scrapy.Field()
     category = scrapy.Field()
     oil_free = scrapy.Field()
     paraben_free = scrapy.Field()

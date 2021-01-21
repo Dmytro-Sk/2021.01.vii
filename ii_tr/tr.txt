@@ -1,0 +1,29 @@
+https://www.upwork.com/jobs/~014d8168604a050ec3
+
+We need someone to scrape all of the Products in the “Skincare” section on the Sephora.com website. You do not need to include bb & cc creams, supplements, facial rollers, self tanners, facial cleansing brushes, hair removal, anti-aging, teeth whitening.
+
+Full project details are included in the additional project files.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+https://api.bazaarvoice.com/data/reviews.json?Filter=contentlocale%3Aen*&Filter=ProductId%3AP7880&Sort=SubmissionTime%3Adesc&Limit=6&Offset=6&Include=Products%2CComments&Stats=Reviews&passkey=caQ0pQXZTqFVYA1yYnnJ9emgUiW59DXA85Kxry8Ma02HE&apiversion=5.4&Locale=en_US
+
+https://api.bazaarvoice.com/data/reviews.json?Filter=contentlocale%3Aen*&Filter=ProductId%3AP427417&Sort=SubmissionTime%3Adesc&Limit=6&Offset=6&Include=Products%2CComments&Stats=Reviews&passkey=caQ0pQXZTqFVYA1yYnnJ9emgUiW59DXA85Kxry8Ma02HE&apiversion=5.4&Locale=en_US
