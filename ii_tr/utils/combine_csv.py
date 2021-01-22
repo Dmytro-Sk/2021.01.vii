@@ -7,7 +7,7 @@ def create_file(spider_name):
         for line in reader:
             headers = line
             break
-        with open(f'./{spider_name}.csv', 'w', newline='') as new_f:
+        with open(f'../../iii_results/{spider_name}.csv', 'w', newline='') as new_f:
             writer = csv.DictWriter(new_f, fieldnames=headers)
             writer.writeheader()
 
@@ -22,7 +22,9 @@ def empty_cells_check(line):
 def combine_csv(spider_name, files_amount):
     create_file(spider_name)
     for i in range(1, files_amount + 1):
-        with open(f'../../iii_results/0{i}-{spider_name}.csv', encoding='utf-8') as old_f:
+        if i < 10:
+            i = str(f'0{i}')
+        with open(f'../../iii_results/{i}-{spider_name}.csv', encoding='utf-8') as old_f:
             reader = csv.reader(old_f)
             next(reader)
             with open(f'../../iii_results/{spider_name}.csv', 'a', newline='', encoding='utf-8') as new_f:
@@ -32,4 +34,4 @@ def combine_csv(spider_name, files_amount):
                     writer.writerow(line)
 
 
-combine_csv(spider_name='spider_name', files_amount=2)
+combine_csv(spider_name='sephora_com', files_amount=46)

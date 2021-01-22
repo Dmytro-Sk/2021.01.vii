@@ -8,8 +8,6 @@ from vii_sephora_com.i_sephora_com.items import SephoraComItem
 
 
 class SephoraComSpider(scrapy.Spider):
-    """ Here 5 places with changeable for loops!!! """
-
     name = 'sephora_com'
     start_urls = ['https://www.sephora.com/shop/skincare']
 
@@ -60,47 +58,40 @@ class SephoraComSpider(scrapy.Spider):
     }
 
     def parse(self, response, **kwargs):
-        print(1)
-
         do_not_needed_categories = ['BB & CC Creams', 'Beauty Supplements', 'Facial Rollers', 'For Face', 'For Body',
                                     'Facial Cleansing Brushes', 'Hair Removal', 'Anti-Aging', 'Teeth Whitening']
 
         product_categories = response.xpath(Locators.PRODUCT_CATEGORIES)
-        for product_category in product_categories:  # todo
-        # for product_category in product_categories[19:20]:
+        # for product_category in product_categories[0:1]:
+        for product_category in product_categories:
             product_category_path = product_category.xpath(Locators.PRODUCT_CATEGORY_PATH).get()
             category = product_category.xpath(Locators.CATEGORY).get()
             if category not in do_not_needed_categories:
-                yield scrapy.Request(url=f'https://www.sephora.com{product_category_path}',
+                category_url = f'https://www.sephora.com{product_category_path}?currentPage=1'
+                yield scrapy.Request(url=category_url,
                                      callback=self.second_requests,
                                      cb_kwargs={'category': category})
 
     def second_requests(self, response, **kwargs):
-        category = kwargs['category']
-        print(2)
-
         products = response.xpath(Locators.PRODUCTS)
-        for product in products:  # todo
         # for product in products[1:2]:
+        for product in products:
             product_path = product.xpath(Locators.PRODUCT_PATH).get()
             product_url = f'https://www.sephora.com{product_path}'
 
             yield scrapy.Request(url=product_url, callback=self.parse_item,
                                  cb_kwargs={'category': kwargs['category']})
 
-            products_amount = int(re.search(r'(\d+)', response.xpath(Locators.PRODUCTS_AMOUNT).get()).group(1))
-            pages = products_amount // 60 + 1 if products_amount / 60 > products_amount // 60 else products_amount // 60
-            print(pages)
-            if pages > 1:
-                for page in range(2, pages + 1):  # todo
-                # for page in range(2, 3):
-                    page_url = f'{response.url}?currentPage={page}'
-                    yield scrapy.Request(url=page_url, callback=self.second_requests,
-                                         cb_kwargs={'category': kwargs['category']})
+        products_amount = int(re.search(r'(\d+)', response.xpath(Locators.PRODUCTS_AMOUNT).get()).group(1))
+        pages = products_amount // 60 + 1 if products_amount / 60 > products_amount // 60 else products_amount // 60
+        current_page = int(re.search(r'(\d+)', response.url).group(1))
+        if pages > current_page:
+            next_products_url = f'{response.url[:-1]}{current_page + 1}'
+
+            yield scrapy.Request(url=next_products_url, callback=self.second_requests,
+                                 cb_kwargs={'category': kwargs['category']})
 
     def parse_item(self, response, **kwargs):
-        print(3)
-
         raw_data = response.xpath(Locators.RAW_DATA).get()
         data = json.loads(raw_data)
 
@@ -113,8 +104,85 @@ class SephoraComSpider(scrapy.Spider):
 
         try:
             description = data['page']['product']['productDetails']['longDescription']
+
+            description = re.sub(r'</?b>', '', description)
+            description = re.sub(r'</?strong>', '', description)
+            description = re.sub(r'<br ?/?>', '\n', description)
+
+            skin_type = ''.join(
+                re.findall(r'(?<=Skin Type:)\s?\s?(.*)\.?', description)) if 'Skin Type:' in description else None
+            skincare_concerns = ''.join(re.findall(r'(?<=Skincare Concerns:)\s?\s?(.*)\.?',
+                                                   description)) if 'Skincare Concerns:' in description else None
+            what_it_is = ''.join(
+                re.findall(r'(?<=What it is:)\s?\s?(.*)\.?', description)) if 'What it is:' in description else None
+
+            oils_free = re.findall(r'[Oo]il[-\ns.,! ]', description)
+            if not oils_free:
+                oil_free = None
+            else:
+                for oil in oils_free:
+                    if oil in description:
+                        oil_free = 'yes'
+                        break
+                    else:
+                        oil_free = None
+
+            parabens_free = re.findall(r'[Pp]araben[-\ns.,! ]', description)
+            if not parabens_free:
+                paraben_free = None
+            else:
+                for paraben in parabens_free:
+                    if paraben in description:
+                        paraben_free = 'yes'
+                        break
+                    else:
+                        paraben_free = None
+
+            sulfates_free = re.findall(r'[Ss]ulfate[-\ns.,! ]', description)
+            if not sulfates_free:
+                sulfate_free = None
+            else:
+                for sulfate in sulfates_free:
+                    if sulfate in description:
+                        sulfate_free = 'yes'
+                        break
+                    else:
+                        sulfate_free = None
+
+            glutens_free = re.findall(r'[Gg]luten[-\ns.,! ]', description)
+            if not glutens_free:
+                gluten_free = None
+            else:
+                for gluten in glutens_free:
+                    if gluten in description:
+                        gluten_free = 'yes'
+                        break
+                    else:
+                        gluten_free = None
+
+            silicones_free = re.findall(r'[Ss]ilicone[-\ns.,! ]', description)
+            if not silicones_free:
+                silicone_free = None
+            else:
+                for silicone in silicones_free:
+                    if silicone in description:
+                        silicone_free = 'yes'
+                        break
+                    else:
+                        silicone_free = None
+
+            vegans = re.findall(r'[Vv]egan[-\ns.,! ]', description)
+            if not vegans:
+                vegan = None
+            else:
+                for vegan in vegans:
+                    if vegan in description:
+                        vegan = 'yes'
+                        break
+                    else:
+                        vegan = None
+
         except:
-            description = None
             skin_type = None
             skincare_concerns = None
             what_it_is = None
@@ -125,88 +193,10 @@ class SephoraComSpider(scrapy.Spider):
             silicone_free = None
             vegan = None
 
-        description = re.sub(r'<\/?b>', '', description)
-        description = re.sub(r'<\/?strong>', '', description)
-        description = re.sub(r'<br ?\/?>', '\n', description)
-
-        skin_type = ''.join(
-            re.findall(r'(?<=Skin Type:)\s?\s?(.*)\.?', description)) if 'Skin Type:' in description else None
-        skincare_concerns = ''.join(re.findall(r'(?<=Skincare Concerns:)\s?\s?(.*)\.?',
-                                               description)) if 'Skincare Concerns:' in description else None
-        what_it_is = ''.join(
-            re.findall(r'(?<=What it is:)\s?\s?(.*)\.?', description)) if 'What it is:' in description else None
-
-        oils_free = re.findall(r'[Oo]il[-\ns.,! ]', description)
-        if not oils_free:
-            oil_free = None
-        else:
-            for oil in oils_free:
-                if oil in description:
-                    oil_free = 'yes'
-                    break
-                else:
-                    oil_free = None
-
-        parabens_free = re.findall(r'[Pp]araben[-\ns.,! ]', description)
-        if not parabens_free:
-            paraben_free = None
-        else:
-            for paraben in parabens_free:
-                if paraben in description:
-                    paraben_free = 'yes'
-                    break
-                else:
-                    paraben_free = None
-
-        sulfates_free = re.findall(r'[Ss]ulfate[-\ns.,! ]', description)
-        if not sulfates_free:
-            sulfate_free = None
-        else:
-            for sulfate in sulfates_free:
-                if sulfate in description:
-                    sulfate_free = 'yes'
-                    break
-                else:
-                    sulfate_free = None
-
-        glutens_free = re.findall(r'[Gg]luten[-\ns.,! ]', description)
-        if not glutens_free:
-            gluten_free = None
-        else:
-            for gluten in glutens_free:
-                if gluten in description:
-                    gluten_free = 'yes'
-                    break
-                else:
-                    gluten_free = None
-
-        silicones_free = re.findall(r'[Ss]ilicone[-\ns.,! ]', description)
-        if not silicones_free:
-            silicone_free = None
-        else:
-            for silicone in silicones_free:
-                if silicone in description:
-                    silicone_free = 'yes'
-                    break
-                else:
-                    silicone_free = None
-
-        vegans = re.findall(r'[Vv]egan[-\ns.,! ]', description)
-        if not vegans:
-            vegan = None
-        else:
-            for vegan in vegans:
-                if vegan in description:
-                    vegan = 'yes'
-                    break
-                else:
-                    vegan = None
-
         iterations = reviews_amount // 100 + 1 if reviews_amount / 100 > reviews_amount // 100 else reviews_amount // 100
-        for i in range(0, iterations * 100, 100):  # todo
         # for i in range(0, 100, 100):
+        for i in range(0, iterations * 100, 100):
             url = f'https://api.bazaarvoice.com/data/reviews.json?Filter=contentlocale%3Aen*&Filter=ProductId%3A{item_id}&Sort=SubmissionTime%3Adesc&Limit={100}&Offset={i}&Include=Products%2CComments&Stats=Reviews&passkey=caQ0pQXZTqFVYA1yYnnJ9emgUiW59DXA85Kxry8Ma02HE&apiversion=5.4&Locale=en_US'
-            # url = 'https://api.bazaarvoice.com/data/reviews.json?Filter=contentlocale%3Aen*&Filter=ProductId%3AP427417&Sort=SubmissionTime%3Adesc&Limit=6&Offset=0&Include=Products%2CComments&Stats=Reviews&passkey=caQ0pQXZTqFVYA1yYnnJ9emgUiW59DXA85Kxry8Ma02HE&apiversion=5.4&Locale=en_US'
             yield scrapy.Request(url=url, headers=self.headers, callback=self.parse_review,
                                  cb_kwargs={
                                      'product_name': product_name,
@@ -225,16 +215,15 @@ class SephoraComSpider(scrapy.Spider):
                                      'what_it_is': what_it_is,
                                  })
 
-    def parse_review(self, response, **kwargs):
-        print(4)
-
+    @staticmethod
+    def parse_review(response, **kwargs):
         items = SephoraComItem()
 
         data = json.loads(response.body)
 
         items_amount = len(data['Results'])
-        for review in range(items_amount):  # todo
         # for review in range(0, 6):
+        for review in range(items_amount):
             try:
                 review_title = data['Results'][review]['Title']
             except:

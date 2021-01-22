@@ -7,23 +7,10 @@ Full project details are included in the additional project files.
 
 
 
+Hello!
+In the attached file you can find a part of result for your task (this is an example of what the result might look like).
+In this table "product_url" and "product_id" only for better controlling of a process. Else columnі are responded your technical requirements.
+If need some changes just let... more
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-https://api.bazaarvoice.com/data/reviews.json?Filter=contentlocale%3Aen*&Filter=ProductId%3AP7880&Sort=SubmissionTime%3Adesc&Limit=6&Offset=6&Include=Products%2CComments&Stats=Reviews&passkey=caQ0pQXZTqFVYA1yYnnJ9emgUiW59DXA85Kxry8Ma02HE&apiversion=5.4&Locale=en_US
-
-https://api.bazaarvoice.com/data/reviews.json?Filter=contentlocale%3Aen*&Filter=ProductId%3AP427417&Sort=SubmissionTime%3Adesc&Limit=6&Offset=6&Include=Products%2CComments&Stats=Reviews&passkey=caQ0pQXZTqFVYA1yYnnJ9emgUiW59DXA85Kxry8Ma02HE&apiversion=5.4&Locale=en_US
+How long do you think this will take?
+The code is already written so if everything suits you it will take no more than an hour.

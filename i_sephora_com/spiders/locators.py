@@ -22,6 +22,5 @@ class Locators:
 
     # additional locators
     RAW_DATA = '//script[@id="linkStore"]/text()'
-    # RAW_DATA_1 = '//div[@class="css-10bjc73 eanm77i0"]//text()'
     COMMENTS = '//div[@class="css-13o7eu2 eanm77i0"]'
 
